@@ -1,0 +1,15 @@
+.main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+
+}
+
+@media screen and (max-width: 920px) {
+  .main {
+    padding: 0 19px 0 19px;
+    max-width: calc(880px - 19px * 2);
+  }
+}

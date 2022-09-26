@@ -1,0 +1,19 @@
+.gallery__like {
+  width: 22px;
+  height: 19px;
+  transition: 1s;
+  background-image: url(../../../images/like-button/like-button.svg);
+  animation-fill-mode: forwards;
+
+
+}
+
+.gallery__like:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.gallery__like:active {
+  background-image: url(../../../images/like-button/like-button-black.svg);
+  opacity: 1;
+}

@@ -1,0 +1,14 @@
+.profile__edit-button-link {
+  transition: 1s;
+  align-self: flex-end;
+}
+
+.profile__edit-button-link:hover {
+  opacity: 0.6;
+}
+
+@media screen and (max-width: 400px) {
+  .profile__edit-button-link {
+    align-self: auto;
+  }
+}
