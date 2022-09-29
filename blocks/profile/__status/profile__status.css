@@ -3,21 +3,24 @@
   font-weight: 400;
   font-size: 18px;
   line-height: 122%;
-  overflow-wrap: break-word;
   margin: 16px 0 0 0;
   text-align: left;
   width: 100%;
+  max-width: 336px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 
-@media screen and (max-width: 675px) {
+@media screen and (max-width: 710px) {
   .profile__status {
     text-align: center;
     margin: 14px 0 0 0;
   }
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 420px) {
   .profile__status {
     font-size: 14px;
   }

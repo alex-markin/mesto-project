@@ -3,7 +3,7 @@
   min-height: 75px;
   width: 100%;
   padding: 45px 0 41px 0;
-  border-bottom: 1px solid #545454;
+  border-bottom: 1px solid rgba(84, 84, 84, 0.7);
   box-sizing: border-box;
 }
 
@@ -14,8 +14,9 @@
   }
 }
 
-@media screen and (max-width: 920px) {
+@media screen and (max-width: 410px) {
   .header {
-    padding: 28px 19px 31.6px 19px;
+    padding: 28px 27px 31.6px 27px;
   }
 }
+

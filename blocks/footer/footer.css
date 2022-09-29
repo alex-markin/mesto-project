@@ -1,16 +1,17 @@
 .footer {
   max-width: 880px;
   width: 100%;
-  padding: 66px 0 0 0;
+  padding: 66px 0 60px 0;
   color: var(--font-color-first);
   box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 
 
 @media screen and (max-width: 920px) {
   .footer {
-    padding: 48px 19px 0 19px;
+    padding: 48px 19px 36px 19px;
     max-width: calc(880px - 19px * 2);
   }
 }

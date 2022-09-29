@@ -1,0 +1,18 @@
+.popup__input-block {
+  display: flex;
+  width: 100%;
+  max-width: 358px;
+  flex-direction: column;
+  padding: 0 0 48px 0;
+  border: 0;
+  gap: 30px;
+  margin: 0;
+}
+
+
+@media screen and (max-width: 530px) {
+  .popup__input-block {
+    max-width: 238px;
+    padding: 0 0 45px 0;
+  }
+}
