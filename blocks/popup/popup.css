@@ -1,5 +1,5 @@
 .popup {
-  position: absolute;
+  position: fixed;
   background-color: #00000050;
   top: 0;
   left: 0;
