@@ -38,7 +38,7 @@
 @import url(../blocks/gallery-element/__picture/gallery-element__picture.css);
 @import url(../blocks/gallery-element/__heading/gallery-element__heading.css);
 @import url(../blocks/gallery-element/__title/gallery-element__title.css);
-@import url(../blocks/gallery-element/__like/gallery-element__like-button.css);
+@import url(../blocks/gallery-element/__like-button/gallery-element__like-button.css);
 
 /* footer */
 @import url(../blocks/footer/footer.css);

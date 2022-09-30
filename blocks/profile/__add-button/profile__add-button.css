@@ -9,7 +9,7 @@
   object-fit: contain;
   background-repeat: no-repeat;
   background-position: center;
-  background-color: var(--background-color-main);
+  background-color: transparent;
   border: 2px solid #FFFFFF;
   border-radius: 2px;
   padding: 0;
@@ -19,8 +19,6 @@
 .profile__add-button:hover {
   opacity: 0.6;
 }
-
-/* не совсем понял комментарий про то, что не меняется прозрачность. В макете меняется */
 
 @media screen and (max-width: 710px) {
   .profile__add-button {
