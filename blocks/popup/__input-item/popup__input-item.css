@@ -2,7 +2,7 @@
 .popup__input-item {
   width: 358px;
   min-height: 27px;
-  padding: 0 0 13px 0;
+  padding: 0 0 0 0;
   border: 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   outline: none;
@@ -10,6 +10,7 @@
   font-size: 14px;
   line-height: 122%;
   font-family: inherit;
+  box-sizing: border-box;
 }
 
 .popup__input-item::-webkit-input-placeholder {
