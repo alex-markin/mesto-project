@@ -1,0 +1,4 @@
+.gallery-element__like-button_active {
+  background-image: url(../../../../images/like-button/like-button-black.svg);
+  opacity: 1;
+}

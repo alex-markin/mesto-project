@@ -4,7 +4,7 @@
   border: 0;
   margin: 0;
   padding: 0;
-  transition: 1s;
+  transition: 0.3s;
   background-image: url(../../../images/like-button/like-button.svg);
   background-color: var(--background-color-second);
   background-size: cover;
@@ -15,9 +15,4 @@
 
 .gallery-element__like-button:hover {
   opacity: 0.5;
-}
-
-.gallery-element__like-button:focus {
-  background-image: url(../../../images/like-button/like-button-black.svg);
-  opacity: 1;
 }

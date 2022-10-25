@@ -1,9 +1,15 @@
 .profile__name-container {
   display: flex;
-  justify-content: center;
+  justify-content: left;
   box-sizing: border-box;
   width: 100%;
   gap: 18px;
+}
+
+@media screen and (max-width: 710px) {
+  .profile__name-container {
+    justify-content: center;
+  }
 }
 
 @media screen and (max-width: 420px) {

@@ -1,0 +1,13 @@
+.image-popup__img {
+  max-width: 75vw;
+  max-height: 75vh;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media screen and (max-width: 530px) {
+  .image-popup__img {
+    aspect-ratio: 0.8 / 1;
+  }
+}
