@@ -10,7 +10,8 @@ const addButton = document.querySelector('.profile__add-button');
 
 
 const closeButtons = document.querySelectorAll('.popup__close-button');
-const saveForms = document.querySelectorAll('.popup__form');
+const profileForm = document.forms['edit-profile'];
+const cardForm = document.forms['add-place'];
 
 const gallery = document.querySelector('.gallery');
 
@@ -76,6 +77,7 @@ function createCard(item) {
   //открытие картинок в отдельном модальном окне
   cardElementImage.addEventListener('click', (evt) => {
     popupImg.src = evt.target.src;
+    popupImg.alt = evt.target.alt;
     popupCaption.textContent = cardElementTitle.textContent;
     openPopup(imagePopup);
   })
@@ -99,7 +101,7 @@ function createCard(item) {
 
 initialCards.forEach(item => {
   const galleryElement = createCard(item)
-  gallery.prepend(galleryElement);
+  gallery.append(galleryElement);
 })
 
 // функционал открытия и закрытия модальных окон
@@ -137,10 +139,10 @@ function changeProfile(name, status) {
   profileStatus.textContent = status;
 }
 
-saveForms[0].addEventListener('submit', (evt) => {
+profileForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  let profileName = profileNameInput.value;
-  let profileStatus = profileStatusInput.value;
+  const profileName = profileNameInput.value;
+  const profileStatus = profileStatusInput.value;
 
   changeProfile(profileName, profileStatus);
 
@@ -160,7 +162,7 @@ function addElement(elementSrc, elementTitle) {
   gallery.prepend(galleryElement);
 }
 
-saveForms[1].addEventListener('submit', (evt) => {
+cardForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   addElement(newCardLink.value, newCardTitle.value);
   evt.target.reset();
