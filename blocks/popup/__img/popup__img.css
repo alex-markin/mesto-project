@@ -1,4 +1,4 @@
-.image-popup__img {
+.popup__img {
   max-width: 75vw;
   max-height: 75vh;
   width: 100%;
@@ -7,7 +7,7 @@
 }
 
 @media screen and (max-width: 530px) {
-  .image-popup__img {
+  .popup__img {
     aspect-ratio: 0.8 / 1;
   }
 }

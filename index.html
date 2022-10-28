@@ -8,6 +8,7 @@
   <link href="./pages/index.css" rel="stylesheet">
   <title>Проект Mesto</title>
 </head>
+
 <body class="page">
 
   <!-- header -->
@@ -62,62 +63,17 @@
       </div>
     </div>
 
+    <div id="image-popup" class="popup">
+      <figure class="popup__image-container">
+        <img class="popup__img" src="">
+        <figcaption class="popup__caption"></figcaption>
+        <button type="button" class="popup__close-button" aria-label="Закрыть"></button>
+      </figure>
+    </div>
+
     <!-- gallery section -->
     <section class="gallery">
 
-      <!-- <article class="gallery-element">
-        <img class="gallery-element__picture" src="./images/gallery-section/altai.png" alt="Алтай">
-        <button type="button" aria-label="удалить" class="gallery-element__trash"></button>
-        <div class="gallery-element__heading">
-          <h2 class="gallery-element__title">Алтай</h2>
-          <button type="button" class="gallery-element__like-button" aria-label="Лайк"></button>
-        </div>
-      </article>
-
-      <article class="gallery-element">
-        <img class="gallery-element__picture" src="./images/gallery-section/dolina-geyzerov.png" alt="Долина гейзеров">
-        <button type="button" aria-label="удалить" class="gallery-element__trash"></button>
-        <div class="gallery-element__heading">
-          <h2 class="gallery-element__title">Долина гейзеров</h2>
-          <button type="button" class="gallery-element__like-button" aria-label="Лайк"></button>
-        </div>
-      </article>
-
-      <article class="gallery-element">
-        <img class="gallery-element__picture" src="./images/gallery-section/kizhi.png" alt="Кижи">
-        <button type="button" aria-label="удалить" class="gallery-element__trash"></button>
-        <div class="gallery-element__heading">
-          <h2 class="gallery-element__title">Кижи, Карелия</h2>
-          <button type="button" class="gallery-element__like-button" aria-label="Лайк"></button>
-        </div>
-      </article>
-
-      <article class="gallery-element">
-        <img class="gallery-element__picture" src="./images/gallery-section/lahta.png" alt="Лахта-центр">
-        <button type="button" aria-label="удалить" class="gallery-element__trash"></button>
-        <div class="gallery-element__heading">
-          <h2 class="gallery-element__title">Лахта-центр</h2>
-          <button type="button" class="gallery-element__like-button" aria-label="Лайк"></button>
-        </div>
-      </article>
-
-      <article class="gallery-element">
-        <img class="gallery-element__picture" src="./images/gallery-section/moscow-city.png" alt="Москва-Сити">
-        <button type="button" aria-label="удалить" class="gallery-element__trash"></button>
-        <div class="gallery-element__heading">
-          <h2 class="gallery-element__title">Москва-Сити</h2>
-          <button type="button" class="gallery-element__like-button" aria-label="Лайк"></button>
-        </div>
-      </article>
-
-      <article class="gallery-element">
-        <img class="gallery-element__picture" src="./images/gallery-section/plato-putorana.png" alt="Плато Путорана">
-        <button type="button" aria-label="удалить" class="gallery-element__trash"></button>
-        <div class="gallery-element__heading">
-          <h2 class="gallery-element__title">Плато Путорана</h2>
-          <button type="button" class="gallery-element__like-button" aria-label="Лайк"></button>
-        </div>
-      </article> -->
     </section>
   </main>
 
@@ -130,7 +86,7 @@
 
   <template id="gallery-element">
     <article class="gallery-element">
-      <img class="gallery-element__picture" src="">
+      <img class="gallery-element__picture" src="" alt="">
       <button type="button" aria-label="удалить" class="gallery-element__trash"></button>
       <div class="gallery-element__heading">
         <h2 class="gallery-element__title"></h2>
@@ -139,14 +95,7 @@
     </article>
   </template>
 
-    <div class="image-popup">
-      <figure class="image-popup__popup-container">
-          <img class="image-popup__img" src="">
-          <figcaption class="image-popup__caption"></figcaption>
-          <button type="button" class="image-popup__close-button" aria-label="Закрыть"></button>
-      </figure>
-    </div>
-
   <script src="./script/script.js"></script>
 </body>
+
 </html>
