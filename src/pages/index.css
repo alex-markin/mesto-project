@@ -30,11 +30,12 @@
 @import url(../blocks/popup/__heading/popup__heading.css);
 @import url(../blocks/popup/__input-block/popup__input-block.css);
 @import url(../blocks/popup/__input-item/popup__input-item.css);
+@import url(../blocks/popup/__input-item/_error/popup__input-item_error.css);
 @import url(../blocks/popup/__save-button/popup__save-button.css);
+@import url(../blocks/popup/__save-button/_disabled/popup__save-button_disabled.css);
 @import url(../blocks/popup/__img/popup__img.css);
 @import url(../blocks/popup/__caption/popup__caption.css);
-
-
+@import url(../blocks/popup/__error/popup__error.css);
 
 /* gallery section */
 @import url(../blocks/gallery/gallery.css);
@@ -49,13 +50,6 @@
 /* footer */
 @import url(../blocks/footer/footer.css);
 @import url(../blocks/footer/__copyright/footer__copyright.css);
-
-
-
-
-
-
-
 
 
 

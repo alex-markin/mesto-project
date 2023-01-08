@@ -1,0 +1,16 @@
+.popup__error {
+  margin: 0;
+  padding: 0;
+  margin-top: 5px;
+  font-size: 12px;
+  line-height: 100%;
+  text-align: left;
+  vertical-align: top;
+  color: #FF0000;
+  font-style: normal;
+  max-height: 12px;
+}
+
+.popup__error_hidden {
+  display: none;
+}
