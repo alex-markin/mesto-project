@@ -15,6 +15,7 @@ function createCard(item) {
   const cardElementImage = cardElement.querySelector('.gallery-element__picture');
 
   const deleteButton = cardElement.querySelector('.gallery-element__trash');
+  const likeButton = cardElement.querySelector('.gallery-element__like-button');
 
   cardElementTitle.textContent = item.name;
   cardElementImage.src = item.link;
@@ -32,6 +33,12 @@ function createCard(item) {
 
   deleteButton.addEventListener('click', () => {
     cardElement.remove();
+  });
+
+  //лайк карточек
+
+  likeButton.addEventListener("click", (evt) => {
+    evt.target.classList.toggle("gallery-element__like-button_active");
   });
 
   return cardElement

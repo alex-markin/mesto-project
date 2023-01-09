@@ -35,10 +35,10 @@ initialCards.forEach((item) => {
 import {
   openPopup,
   closePopup,
-  editButtonHandler,
+  editButtonHandle,
 } from "./components/utils.js";
 
-editButton.addEventListener("click", editButtonHandler);
+editButton.addEventListener("click", editButtonHandle);
 
 addButton.addEventListener("click", () => {
   openPopup(addPopup);
@@ -64,22 +64,6 @@ profileForm.addEventListener("submit", (evt) => {
   changeProfile(profileName, profileStatus);
   closePopup(popup);
 });
-
-// функционал лайка карточек
-
-import { like } from "./components/utils.js";
-
-document.addEventListener("click", like);
-
-// функционал закрытия попапа по нажатию Escape или кликом на оверлей
-
-import {
-  closePopupByEsc,
-  closePopupByOverlayClick,
-} from "./components/utils.js";
-
-document.addEventListener("keydown", closePopupByEsc);
-document.addEventListener("click", closePopupByOverlayClick);
 
 // валидация форм
 
