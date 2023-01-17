@@ -1,47 +1,47 @@
 import "./pages/index.css";
+export { avatarImg, renderLoading };
 
 // переменные
 
 const addPopup = document.querySelector("#add-item-popup");
+const avatarPopup = document.querySelector("#edit-avatar-popup");
 const editButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
 const closeButtons = document.querySelectorAll(".popup__close-button");
+
 const profileForm = document.forms["edit-profile"];
+
 const cardForm = document.forms["add-place"];
+const newCardLink = cardForm.elements.link;
+const newCardTitle = cardForm.elements.title;
 
-const newCardLink = document.querySelector("#link");
-const newCardTitle = document.querySelector("#title");
+const editAvatar = document.querySelector(".profile__avatar-container");
+const avatarForm = document.forms["edit-avatar"];
+const avatarLink = avatarForm.elements.avatarLink;
+const avatarImg = document.querySelector(".profile__avatar");
 
-import { profileNameInput, profileStatusInput } from "./components/utils.js";
-import { gallery } from "./components/createCards.js";
+// обновление аватара при рестарте
 
-// функция создания новых карточек (возвращает готовую карточку с функциями открытия и удаления)
+import { getInfo } from "./components/api.js";
+getInfo();
 
-import { createCard } from "./components/createCards.js";
+// загрузка базового набор карточек c сервера
 
-// базовый набор карточек
+import { getCards } from "./components/api.js";
+getCards();
 
-import { initialCards } from "./components/initialCards.js";
+// открытие и закрытие модальных окон
 
-// вставка 6 базовых картинок
-
-initialCards.forEach((item) => {
-  const galleryElement = createCard(item);
-  gallery.append(galleryElement);
-});
-
-// функционал открытия и закрытия модальных окон
-
-import {
-  openPopup,
-  closePopup,
-  editButtonHandle,
-} from "./components/utils.js";
+import { openPopup, closePopup, editButtonHandle, renderLoading } from "./components/utils.js";
 
 editButton.addEventListener("click", editButtonHandle);
 
 addButton.addEventListener("click", () => {
   openPopup(addPopup);
+});
+
+editAvatar.addEventListener("click", () => {
+  openPopup(avatarPopup);
 });
 
 closeButtons.forEach((button) => {
@@ -51,18 +51,21 @@ closeButtons.forEach((button) => {
   });
 });
 
-// // функционал редактирования профиля
+// редактирование профиля
 
 import { changeProfile } from "./components/utils.js";
+import { profileNameInput, profileStatusInput } from "./components/utils.js";
 
 profileForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
+  renderLoading(evt.submitter, true);
   const profileName = profileNameInput.value;
   const profileStatus = profileStatusInput.value;
   const popup = evt.target.closest(".popup");
-
   changeProfile(profileName, profileStatus);
   closePopup(popup);
+  renderLoading(evt.submitter, false);
+
 });
 
 // валидация форм
@@ -81,9 +84,31 @@ enableValidation({
 // //функционал добавления новых карточек
 
 import { addElement } from "./components/createCards.js";
+import { sendNewCard } from "./components/api.js";
 
 cardForm.addEventListener("submit", (evt) => {
+  renderLoading(evt.submitter, true);
   addElement(newCardLink.value, newCardTitle.value);
+  sendNewCard(newCardTitle.value, newCardLink.value);
+  evt.target.reset();
+  setTimeout()
+  closePopup();
+  renderLoading(evt.submitter, false);
+});
+
+// редактирование Аватара
+
+import { updateAvatar } from "./components/api.js";
+
+avatarForm.addEventListener("submit", (evt) => {
+  renderLoading(evt.submitter, true);
+  evt.preventDefault();
+  avatarImg.src = avatarLink.value;
+  updateAvatar(avatarLink.value);
   evt.target.reset();
   closePopup();
+  renderLoading(evt.submitter, false);
 });
+
+
+

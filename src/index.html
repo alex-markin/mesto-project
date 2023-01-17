@@ -1,113 +1,137 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Проект Mesto</title>
-  </head>
 
-  <body class="page">
-    <!-- header -->
-    <header class="header">
-      <img
-        class="header__logo"
-        alt="лого Место"
-        src="<%=require('./images/logo/logo.svg')%>"
-      />
-    </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    http-equiv="X-UA-Compatible"
+    content="IE=edge"
+  />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>Проект Mesto</title>
+</head>
 
-    <main class="main">
-      <!-- profile section -->
-      <section class="profile">
+<body class="page">
+  <!-- header -->
+  <header class="header">
+    <img
+      class="header__logo"
+      alt="лого Место"
+      src="<%=require('./images/logo/logo.svg')%>"
+    />
+  </header>
+
+  <main class="main">
+    <!-- profile section -->
+    <section class="profile">
+      <div class="profile__avatar-container">
         <img
           class="profile__avatar"
           alt="аватар"
-          src="<%=require('./images/avatars/Avatar.png')%>"
+          src=""
         />
-
-        <div class="profile__info">
-          <div class="profile__name-container">
-            <h1 class="profile__name">Жак-Ив Кусто</h1>
-            <button
-              type="button"
-              class="profile__edit-button"
-              aria-label="Редактировать профиль"
-            ></button>
-          </div>
-          <p class="profile__status">Исследователь океана</p>
+        <div class="profile__avatar-overlay"></div>
+      </div>
+      <div class="profile__info">
+        <div class="profile__name-container">
+          <h1 class="profile__name"></h1>
+          <button
+            type="button"
+            class="profile__edit-button"
+            aria-label="Редактировать профиль"
+          ></button>
         </div>
+        <p class="profile__status"></p>
+      </div>
+      <button
+        type="button"
+        class="profile__add-button"
+        aria-label="Добавить контент"
+      ></button>
+    </section>
+
+    <!-- popups -->
+    <!-- попап редактирования профиля -->
+    <div
+      id="edit-profile-popup"
+      class="popup"
+    >
+      <div class="popup__container">
         <button
           type="button"
-          class="profile__add-button"
-          aria-label="Добавить контент"
+          class="popup__close-button"
+          aria-label="Закрыть"
         ></button>
-      </section>
-
-      <!-- popups -->
-      <div id="edit-profile-popup" class="popup">
-        <div class="popup__container">
-          <button
-            type="button"
-            class="popup__close-button"
-            aria-label="Закрыть"
-          ></button>
-          <h2 class="popup__heading">Редактировать профиль</h2>
-          <form
-           class="popup__form"
-           id="edit-form"
-           name="edit-profile"
-           novalidate>
-            <fieldset class="popup__input-block">
-              <div class="input__container">
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  class="popup__input-item"
-                  placeholder="Жак Ив Кусто"
-                  required
-                  minlength="2"
-                  maxlength="40"
-                  pattern="^[a-zA-Zа-яА-Я\-\s]+"
-                  data-error-message="Разрешены только латинские буквы, кириллические буквы, знаки дефиса и пробелы"
-                />
-                <p class="name-error popup__error popup__error_hidden"></p>
-              </div>
-              <div class="input__container">
-                <input
-                  type="text"
-                  id="status"
-                  name="status"
-                  class="popup__input-item"
-                  placeholder="Исследователь океана"
-                  required
-                  minlength="2"
-                  maxlength="200"
-                  pattern="^[a-zA-Zа-яА-Я\-\s]+"
-                  data-error-message="Разрешены только латинские буквы, кириллические буквы, знаки дефиса и пробелы"
-                />
-                <p class="status-error popup__error popup__error_hidden"></p>
-              </div>
-            </fieldset>
-            <input type="submit" class="popup__save-button" value="Сохранить" />
-          </form>
-        </div>
+        <h2 class="popup__heading">Редактировать профиль</h2>
+        <form
+          class="popup__form"
+          id="edit-form"
+          name="edit-profile"
+          novalidate
+        >
+          <fieldset class="popup__input-block">
+            <div class="input__container">
+              <input
+                type="text"
+                id="name"
+                name="name"
+                class="popup__input-item"
+                placeholder="Жак Ив Кусто"
+                required
+                minlength="2"
+                maxlength="40"
+                pattern="^[a-zA-Zа-яА-Я\-\s]+"
+                data-error-message="Разрешены только латинские буквы, кириллические буквы, знаки дефиса и пробелы"
+              />
+              <p class="name-error popup__error popup__error_hidden"></p>
+            </div>
+            <div class="input__container">
+              <input
+                type="text"
+                id="status"
+                name="status"
+                class="popup__input-item"
+                placeholder="Исследователь океана"
+                required
+                minlength="2"
+                maxlength="200"
+                pattern="^[a-zA-Zа-яА-Я\-\s]+"
+                data-error-message="Разрешены только латинские буквы, кириллические буквы, знаки дефиса и пробелы"
+              />
+              <p class="status-error popup__error popup__error_hidden"></p>
+            </div>
+          </fieldset>
+          <input
+            type="submit"
+            class="popup__save-button"
+            value="Сохранить"
+          />
+        </form>
       </div>
+    </div>
 
-      <div id="add-item-popup" class="popup">
-        <div class="popup__container">
-          <button
-            type="button"
-            class="popup__close-button"
-            aria-label="Закрыть"
-          ></button>
-          <h2 class="popup__heading">Новое место</h2>
-          <form
-            class="popup__form"
-            name="add-place"
-            novalidate>
-            <fieldset class="popup__input-block">
+    <!-- попап добавления карточки -->
+    <div
+      id="add-item-popup"
+      class="popup"
+    >
+      <div class="popup__container">
+        <button
+          type="button"
+          class="popup__close-button"
+          aria-label="Закрыть"
+        ></button>
+        <h2 class="popup__heading">Новое место</h2>
+        <form
+          class="popup__form"
+          name="add-place"
+          novalidate
+        >
+          <fieldset class="popup__input-block">
+            <div class="input__container">
               <input
                 type="text"
                 id="title"
@@ -121,6 +145,8 @@
                 data-error-message="Разрешены только латинские буквы, кириллические буквы, знаки дефиса и пробелы"
               />
               <p class="title-error popup__error popup__error_hidden"></p>
+            </div>
+            <div class="input__container">
               <input
                 type="url"
                 id="link"
@@ -130,50 +156,111 @@
                 required
               />
               <p class="link-error popup__error popup__error_hidden"></p>
-            </fieldset>
-            <input type="submit" class="popup__save-button" value="Сохранить" />
-          </form>
-        </div>
+            </div>
+          </fieldset>
+          <input
+            type="submit"
+            class="popup__save-button"
+            value="Сохранить"
+          />
+        </form>
       </div>
+    </div>
 
-      <div id="image-popup" class="popup">
-        <figure class="popup__image-container">
-          <img class="popup__img" src="" alt="" />
-          <figcaption class="popup__caption"></figcaption>
-          <button
-            type="button"
-            class="popup__close-button"
-            aria-label="Закрыть"
-          ></button>
-        </figure>
-      </div>
-
-      <!-- gallery section -->
-      <section class="gallery"></section>
-    </main>
-
-    <!-- footer -->
-    <footer class="footer">
-      <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
-    </footer>
-
-    <template id="gallery-element">
-      <article class="gallery-element">
-        <img class="gallery-element__picture" src="" alt="" />
+    <!-- попап редактирования аватара -->
+    <div
+      id="edit-avatar-popup"
+      class="popup"
+    >
+      <div class="popup__container">
         <button
           type="button"
-          aria-label="удалить"
-          class="gallery-element__trash"
+          class="popup__close-button"
+          aria-label="Закрыть"
         ></button>
-        <div class="gallery-element__heading">
-          <h2 class="gallery-element__title"></h2>
+        <h2 class="popup__heading">Обновить аватар</h2>
+        <form
+          class="popup__form"
+          name="edit-avatar"
+          novalidate
+        >
+          <fieldset class="popup__input-block">
+            <div class="input__container">
+              <input
+                type="url"
+                id="avatarLink"
+                name="avatarLink"
+                class="popup__input-item"
+                placeholder="Cсылка на аватар"
+                required
+              />
+              <p class="avatarLink-error popup__error popup__error_hidden"></p>
+            </div>
+          </fieldset>
+          <input
+            type="submit"
+            class="popup__save-button"
+            value="Сохранить"
+          />
+        </form>
+      </div>
+    </div>
+
+    <!-- попап картинки -->
+
+    <div
+      id="image-popup"
+      class="popup"
+    >
+      <figure class="popup__image-container">
+        <img
+          class="popup__img"
+          src=""
+          alt=""
+        />
+        <figcaption class="popup__caption"></figcaption>
+        <button
+          type="button"
+          class="popup__close-button"
+          aria-label="Закрыть"
+        ></button>
+      </figure>
+    </div>
+
+    <!-- gallery section -->
+    <section class="gallery"></section>
+  </main>
+
+  <!-- footer -->
+  <footer class="footer">
+    <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
+  </footer>
+
+  <template id="gallery-element">
+    <article class="gallery-element">
+      <img
+        class="gallery-element__picture"
+        src=""
+        alt=""
+      />
+      <button
+        type="button"
+        aria-label="удалить"
+        class="gallery-element__trash"
+      ></button>
+      <div class="gallery-element__heading">
+        <h2 class="gallery-element__title"></h2>
+        <div class="gallery-element__like-container">
           <button
             type="button"
             class="gallery-element__like-button"
             aria-label="Лайк"
           ></button>
+          <p class="gallery-element__like-count"></p>
         </div>
-      </article>
-    </template>
-  </body>
+      </div>
+    </article>
+  </template>
+</body>
+
 </html>

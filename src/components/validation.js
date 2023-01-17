@@ -1,5 +1,7 @@
 export { enableValidation };
 
+// инициация валидации форм
+
 function enableValidation(config) {
   const formList = Array.from(document.querySelectorAll(config.formSelector));
   formList.forEach((formElement) => {
@@ -9,12 +11,16 @@ function enableValidation(config) {
     setInputListeners(formElement);
   });
 
+// отображение ошибки
+
   function showInputError(formElement, inputItem, inputItemErrorMessage) {
     const errorElement = formElement.querySelector(`.${inputItem.id}-error`);
     inputItem.classList.add(config.inputErrorClass);
     errorElement.textContent = inputItemErrorMessage;
     errorElement.classList.remove(config.errorClass);
   }
+
+// сокрытие ошибки
 
   function hideInputError(formElement, inputItem) {
     const errorElement = formElement.querySelector(`.${inputItem.id}-error`);
@@ -23,11 +29,15 @@ function enableValidation(config) {
     errorElement.classList.add(config.errorClass);
   }
 
+// проверка валидности всей формы
+
   function checkFormValidity(inputList) {
     return inputList.some((inputItem) => {
       return !inputItem.validity.valid;
     });
   }
+
+// активация/деактивация кнопки "Сохранить"
 
   function toggleSubmitButton(inputList, submitButton) {
     if (checkFormValidity(inputList)) {
@@ -38,7 +48,7 @@ function enableValidation(config) {
       submitButton.classList.remove(config.inactiveButtonClass);
     }
   }
-
+// проверка валидности input
   function checkInputValidity(formElement, inputItem) {
     if (inputItem.validity.patternMismatch) {
       inputItem.setCustomValidity(inputItem.dataset.errorMessage);
@@ -51,6 +61,8 @@ function enableValidation(config) {
       hideInputError(formElement, inputItem);
     }
   }
+
+// активация валидации input и сброс формы
 
   function setInputListeners(formElement) {
     const inputList = Array.from(

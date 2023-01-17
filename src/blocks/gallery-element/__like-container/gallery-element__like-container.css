@@ -1,0 +1,7 @@
+.gallery-element__like-container {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+}
