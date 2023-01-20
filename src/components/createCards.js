@@ -1,12 +1,10 @@
-export { createCard, addElement }; //functions
-export { gallery }; //consts
-import { openPopup } from "./utils.js";
-import { deleteCard, like, unlike } from "./api.js";
+import { openPopup } from "./utils.js"; // повторяющиеся функции
 
-const imagePopup = document.querySelector("#image-popup");
-const popupImg = document.querySelector(".popup__img");
-const popupCaption = document.querySelector(".popup__caption");
-const gallery = document.querySelector(".gallery");
+import { deleteCard, like, unlike } from "./api.js"; // работа с API
+
+import { imagePopup, popupImg, popupCaption, gallery } from "./globalConsts.js"; // глобальные переменные
+
+export { createCard, addElement };
 
 // создание новой карточки
 
@@ -25,10 +23,13 @@ function createCard(item) {
   const likeButton = cardElement.querySelector(".gallery-element__like-button");
   const likeCount = cardElement.querySelector(".gallery-element__like-count");
 
+
   cardElementTitle.textContent = item.name;
   cardElementImage.src = item.link;
   cardElementImage.alt = `Картинка: ${item.name}`;
   likeCount.textContent = item.likes.length;
+
+
 
   //открытие картинок в отдельном модальном окне
   cardElementImage.addEventListener("click", (evt) => {
@@ -41,20 +42,34 @@ function createCard(item) {
   //удаление карточек
 
   deleteButton.addEventListener("click", () => {
-    cardElement.remove();
-    deleteCard(item._id);
+    try {
+      deleteCard(item._id);
+      cardElement.remove();
+    } catch {
+      console.log(`Ошибка ${err}`);
+    }
   });
 
   //лайк карточек
 
   likeButton.addEventListener("click", (evt) => {
-    if (evt.target.classList.contains("gallery-element__like-button_active")) {
-      evt.target.classList.toggle("gallery-element__like-button_active");
-      unlike(item._id, cardElement);
-    } else {
-      evt.target.classList.toggle("gallery-element__like-button_active");
-      like(item._id, cardElement);
-    }
+
+      if (evt.target.classList.contains("gallery-element__like-button_active")) {
+        evt.target.classList.toggle("gallery-element__like-button_active");
+
+        unlike(item._id).then((data) => {
+          likeCount.textContent = data.likes.length;
+        })
+      } else {
+        evt.target.classList.toggle("gallery-element__like-button_active");
+
+        like(item._id).then((data) => {
+          likeCount.textContent = data.likes.length;
+        })
+      }
+
+
+
   });
 
   return cardElement;
@@ -75,3 +90,5 @@ function addElement(elementSrc, elementTitle) {
   deleteButton.classList.add("gallery-element__trash_visible");
   gallery.prepend(galleryElement);
 }
+
+// для ревьюера: тут элемент кнопки удаления добавляется таким образом, так как очевидно, что пользователь добавляет карточку, следовательно кнопка должна на этой карточке присутствовать. Иначе кнопка подгружается только после перезагрузки страницы. Функция проверки по id добавлена в index при обновлении карточек с сервера.

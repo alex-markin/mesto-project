@@ -1,23 +1,20 @@
-export {
-  openPopup,
-  closePopup,
-  editButtonHandle,
-  changeProfile,
-  closePopupByEsc,
-  closePopupByOverlayClick,
-  renderLoading
-}; //funсtions
-
-export { profileNameInput, profileStatusInput, profileName, profileStatus }; //consts
+export { addDeleteButton }; //consts
 
 import { sendProfileChanges } from "./api.js";
 
-const popups = document.querySelectorAll(".popup");
-const editPopup = document.querySelector("#edit-profile-popup");
-const profileName = document.querySelector(".profile__name");
-const profileStatus = document.querySelector(".profile__status");
-const profileNameInput = document.querySelector("#name");
-const profileStatusInput = document.querySelector("#status");
+import {
+  profileName,
+  profileStatus
+} from "./globalConsts.js"; // глобальные переменные
+
+export {
+  openPopup,
+  closePopup,
+  changeProfile,
+  closePopupByEsc,
+  closePopupByOverlayClick,
+  renderLoading,
+};
 
 // закрытие попапа
 
@@ -46,19 +43,10 @@ function openPopup(popup) {
 // закрытие попапа
 
 function closePopup() {
-  popups.forEach((popup) => {
-    popup.classList.remove("popup_opened");
-    document.removeEventListener("keydown", closePopupByEsc);
-    popup.removeEventListener("click", closePopupByOverlayClick);
-  });
-}
-
-// обработчик кнопки открытия окна редактирования профиля
-
-function editButtonHandle() {
-  profileNameInput.value = profileName.textContent;
-  profileStatusInput.value = profileStatus.textContent;
-  openPopup(editPopup);
+  const popup = document.querySelector(".popup_opened");
+  popup.classList.remove("popup_opened");
+  document.removeEventListener("keydown", closePopupByEsc);
+  popup.removeEventListener("click", closePopupByOverlayClick);
 }
 
 // внесение изменений в профиль
@@ -73,8 +61,16 @@ function changeProfile(name, status) {
 
 function renderLoading(submitButton, isLoading) {
   if (isLoading) {
-    submitButton.value = 'Сохранить...';
+    submitButton.value = "Сохранить...";
   } else {
-    submitButton.value = 'Сохранить';
+    submitButton.value = "Сохранить";
+  }
+}
+
+// добавление кнопки удаления на карточки пользователя
+
+function addDeleteButton(button, cardId, authorId) {
+  if (cardId == authorId) {
+    button.classList.add("gallery-element__trash_visible");
   }
 }

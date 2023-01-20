@@ -1,22 +1,18 @@
 export {
   getInfo,
   sendProfileChanges,
-  getCards,
   sendNewCard,
   updateAvatar,
   deleteCard,
   like,
   unlike,
 };
-import { profileName, profileStatus } from "./utils.js";
-import { createCard, gallery } from "./createCards.js";
-import { avatarImg, renderLoading } from "../index.js";
 
-// подтягивание данных профиля при загрузке страницы
+// запрос данных о профиле и карточках при загрузке страницы
 
 async function getInfo() {
   try {
-    const fetchRes = await fetch(
+    const userFetch = await fetch(
       "https://nomoreparties.co/v1/plus-cohort-18/users/me",
       {
         headers: {
@@ -26,13 +22,21 @@ async function getInfo() {
       }
     );
 
-    const jsonRes = await fetchRes.json();
-    avatarImg.src = jsonRes.avatar;
-    profileName.textContent = jsonRes.name;
-    profileStatus.textContent = jsonRes.about;
+    const cardsFetch = await fetch(
+      "https://nomoreparties.co/v1/plus-cohort-18/cards ",
+      {
+        headers: {
+          authorization: "cf2f740d-de00-436f-a166-58000bce866a",
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-    return jsonRes;
+    const userInfo = await userFetch.json();
+    const cards = await cardsFetch.json();
 
+    const results = [userInfo, cards];
+    return results;
   } catch (err) {
     console.log(`Ошибка ${err}`);
   }
@@ -60,38 +64,6 @@ async function sendProfileChanges(name, status) {
   }
 }
 
-// загрузка карточек с сервера
-
-async function getCards() {
-  try {
-    const response = await fetch(
-      "https://nomoreparties.co/v1/plus-cohort-18/cards ",
-      {
-        headers: {
-          authorization: "cf2f740d-de00-436f-a166-58000bce866a",
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const res = await response.json();
-    res.forEach((item) => {
-      const galleryElement = createCard(item);
-      const deleteButton = galleryElement.querySelector(
-        ".gallery-element__trash"
-      );
-
-      if (item.owner.name == profileName.textContent) {
-        deleteButton.classList.add("gallery-element__trash_visible");
-      }
-
-      gallery.append(galleryElement);
-    });
-
-  } catch (err) {
-    console.log(`Ошибка ${err}`);
-  }
-}
-
 // отправка новой карточки на сервер
 
 async function sendNewCard(cardName, cardLink) {
@@ -107,7 +79,6 @@ async function sendNewCard(cardName, cardLink) {
         link: cardLink,
       }),
     });
-
   } catch (err) {
     console.log(`Ошибка ${err}`);
   }
@@ -124,7 +95,6 @@ async function deleteCard(cardId) {
         "Content-Type": "application/json",
       },
     });
-
   } catch (err) {
     console.log(`Ошибка ${err}`);
   }
@@ -144,7 +114,6 @@ async function updateAvatar(avatarLink) {
         avatar: avatarLink,
       }),
     });
-
   } catch (err) {
     console.log(`Ошибка ${err}`);
   }
@@ -152,7 +121,7 @@ async function updateAvatar(avatarLink) {
 
 // лайк карточки
 
-async function like(cardId, cardElement) {
+async function like(cardId) {
   try {
     const fetchRes = await fetch(
       `https://nomoreparties.co/v1/plus-cohort-18/cards/likes/${cardId}`,
@@ -165,16 +134,14 @@ async function like(cardId, cardElement) {
       }
     );
     const jsonRes = await fetchRes.json();
+    return jsonRes;
 
-    const likeCount = cardElement.querySelector(".gallery-element__like-count");
-    likeCount.textContent = jsonRes.likes.length;
-
-  } catch (err) {
-    console.log(`Ошибка ${err}`);
+    } catch (err) {
+      console.log(`Ошибка ${err}`);
+    }
   }
-}
 
-// снятие лайка карточки
+  // снятие лайка карточки
 
 async function unlike(cardId, cardElement) {
   try {
@@ -189,14 +156,9 @@ async function unlike(cardId, cardElement) {
       }
     );
     const jsonRes = await fetchRes.json();
-
-    const likeCount = cardElement.querySelector(".gallery-element__like-count");
-    likeCount.textContent = jsonRes.likes.length;
+      return jsonRes;
 
   } catch (err) {
     console.log(`Ошибка ${err}`);
   }
 }
-
-
-
