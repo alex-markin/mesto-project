@@ -31,7 +31,7 @@
 .popup__error{color:red;font-size:12px;font-style:normal;line-height:100%;margin:5px 0 0;max-height:12px;padding:0;text-align:left;vertical-align:top}.popup__error_hidden{display:none}
 .gallery{box-sizing:border-box;-moz-column-gap:17px;column-gap:17px;display:grid;font-size:0;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(auto-fit,1fr);max-width:880px;padding:50px 0 0;row-gap:20px;width:100%}@media screen and (max-width:675px){.gallery{grid-template-columns:repeat(2,1fr)}}@media screen and (max-width:400px){.gallery{grid-template-columns:repeat(1,1fr);justify-items:center;padding:36px 0 0}}
 .gallery-element{border-radius:10px;max-width:282px;overflow:hidden;position:relative}
-.gallery-element__picture{aspect-ratio:1/1;cursor:pointer;width:100%}
+.gallery-element__picture{aspect-ratio:1/1;cursor:pointer;min-height:282px;-o-object-fit:cover;object-fit:cover;width:100%}
 .gallery-element__heading{align-items:center;background-color:var(--background-color-second);display:flex;justify-content:space-between;padding:25px 15px 25px 21px}
 .gallery-element__title{font-size:24px;font-style:normal;font-weight:900;line-height:120%;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:calc(100% - 30px)}@media screen and (max-width:675px){.gallery-element__title{font-size:18px}}@media screen and (max-width:400px){.gallery-element__title{font-size:24px}}
 .gallery-element__like-button{animation-fill-mode:forwards;background-color:var(--background-color-second);background-image:url(87ed371465c7a6a1cd01.svg);background-repeat:no-repeat;background-size:cover;border:0;cursor:pointer;height:19px;margin:0;padding:0;transition:.3s;width:22px}.gallery-element__like-button:hover{opacity:.5}
@@ -40,6 +40,7 @@
 .gallery-element__like-button_active{background-image:url(fe17a515669479b1e649.svg);opacity:1}
 .gallery-element__trash{background-color:transparent;background-image:url(cbc09a894bdd4c956365.svg);background-repeat:no-repeat;background-size:contain;border:0;cursor:pointer;display:none;height:19.3px;margin:0;padding:0;position:absolute;right:20px;top:20px;transition:.5s;width:18px}.gallery-element__trash:hover{opacity:.6}
 .gallery-element__trash_visible{display:block}
+.popup_image{background:rgba(0,0,0,.9)}
 .footer{box-sizing:border-box;color:var(--font-color-first);flex-shrink:0;max-width:880px;padding:66px 0 60px;width:100%}@media screen and (max-width:920px){.footer{max-width:842px;padding:48px 19px 36px}}
 .footer__copyright{color:#545454;font-size:18px;font-style:normal;font-weight:400;line-height:122%;margin:0}@media screen and (max-width:400px){.footer__copyright{font-size:14px}}
 
