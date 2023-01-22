@@ -34,45 +34,50 @@ import {
   closePopup,
   renderLoading,
   changeProfile,
-  addDeleteButton,
 } from "./components/utils.js"; // повторяющиеся функции
 
 import { enableValidation } from "./components/validation.js"; // валидация форм
 
 import { addElement, createCard } from "./components/createCards.js"; // создание новой карточки
 
-// обновление профиля с сервера
 
-function loadProfile() {
-  getInfo().then((data) => {
-    avatarImg.src = data[0].avatar;
-    profileName.textContent = data[0].name;
-    profileStatus.textContent = data[0].about;
-  });
-}
+// рендер профиля и карточек с сервера
 
-loadProfile();
+async function renderInfo() {
+  try {
+    const info = await getInfo();
+    // рендер профиля
+    avatarImg.src = info[0].avatar;
+    profileName.textContent = info[0].name;
+    profileStatus.textContent = info[0].about;
 
-// загрузка карточек c сервера
-
-function loadCards() {
-  getInfo()
-  .then((data) => {
-    data[1].forEach((item) => {
-      const galleryElement = createCard(item);
-      const deleteButton = galleryElement.querySelector(
-        ".gallery-element__trash"
-      )
-
-      addDeleteButton(deleteButton, item.owner._id, data[0]._id);
-
+    // рендер карточек
+    info[1].forEach((item) => {
+      const galleryElement = createCard(item, info[0]);
       gallery.append(galleryElement);
-    })
-
-  })
+    });
+  } catch {
+    console.log(`Ошибка ${err}`);
+  }
 }
 
-loadCards();
+renderInfo()
+
+// обработчик формы добавления новых карточек
+
+cardForm.addEventListener("submit", async (evt) => {
+  renderLoading(evt.submitter, true);
+  try {
+    const newCard = await sendNewCard(newCardTitle.value, newCardLink.value)
+    addElement(newCard)
+    evt.target.reset()
+    closePopup()
+  } catch {
+    console.log(`Ошибка ${err}`);
+  } finally {
+    renderLoading(evt.submitter, false);
+  }
+});
 
 // открытие и закрытие модальных окон
 
@@ -101,14 +106,14 @@ closeButtons.forEach((button) => {
 
 // обработчик формы редактирования профиля
 
-profileForm.addEventListener("submit", (evt) => {
+profileForm.addEventListener("submit", async (evt) => {
   evt.preventDefault();
   renderLoading(evt.submitter, true);
   try {
     const profileName = profileNameInput.value;
     const profileStatus = profileStatusInput.value;
     const popup = evt.target.closest(".popup");
-    changeProfile(profileName, profileStatus);
+    await changeProfile(profileName, profileStatus);
     closePopup(popup);
   } catch {
     console.log(`Ошибка ${err}`);
@@ -117,30 +122,15 @@ profileForm.addEventListener("submit", (evt) => {
   }
 });
 
-// обработчик формы добавления новых карточек
-
-cardForm.addEventListener("submit", (evt) => {
-  renderLoading(evt.submitter, true);
-  try {
-    sendNewCard(newCardTitle.value, newCardLink.value)
-    addElement(newCardLink.value, newCardTitle.value)
-    evt.target.reset()
-    closePopup()
-  } catch {
-    console.log(`Ошибка ${err}`);
-  } finally {
-    renderLoading(evt.submitter, false);
-  }
-});
 
 // обработчик формы редактирования Аватара
 
-avatarForm.addEventListener("submit", (evt) => {
+avatarForm.addEventListener("submit", async (evt) => {
   evt.preventDefault();
   renderLoading(evt.submitter, true);
   try {
+    await updateAvatar(avatarLink.value);
     avatarImg.src = avatarLink.value;
-    updateAvatar(avatarLink.value);
     evt.target.reset();
     closePopup();
   } catch {

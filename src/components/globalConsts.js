@@ -1,4 +1,9 @@
 
+export const userID = '535b40ada043188a626ed8d6'; // уникальный ID пользователя
+
+export const authorization = 'cf2f740d-de00-436f-a166-58000bce866a'; // код авторизации сервера
+
+
 
 export const addPopup = document.querySelector("#add-item-popup");
 export const avatarPopup = document.querySelector("#edit-avatar-popup");

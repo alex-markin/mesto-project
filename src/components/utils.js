@@ -1,5 +1,3 @@
-export { addDeleteButton }; //consts
-
 import { sendProfileChanges } from "./api.js";
 
 import {
@@ -51,10 +49,10 @@ function closePopup() {
 
 // внесение изменений в профиль
 
-function changeProfile(name, status) {
+async function changeProfile(name, status) {
+  await sendProfileChanges(profileName, profileStatus);
   profileName.textContent = name;
   profileStatus.textContent = status;
-  sendProfileChanges(profileName, profileStatus);
 }
 
 // обработка загрузки
@@ -67,10 +65,4 @@ function renderLoading(submitButton, isLoading) {
   }
 }
 
-// добавление кнопки удаления на карточки пользователя
 
-function addDeleteButton(button, cardId, authorId) {
-  if (cardId == authorId) {
-    button.classList.add("gallery-element__trash_visible");
-  }
-}

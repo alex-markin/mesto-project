@@ -8,6 +8,8 @@ export {
   unlike,
 };
 
+import { authorization } from "./globalConsts.js";
+
 // запрос данных о профиле и карточках при загрузке страницы
 
 async function getInfo() {
@@ -16,7 +18,7 @@ async function getInfo() {
       "https://nomoreparties.co/v1/plus-cohort-18/users/me",
       {
         headers: {
-          authorization: "cf2f740d-de00-436f-a166-58000bce866a",
+          authorization: authorization,
           "Content-Type": "application/json",
         },
       }
@@ -26,7 +28,7 @@ async function getInfo() {
       "https://nomoreparties.co/v1/plus-cohort-18/cards ",
       {
         headers: {
-          authorization: "cf2f740d-de00-436f-a166-58000bce866a",
+          authorization: authorization,
           "Content-Type": "application/json",
         },
       }
@@ -50,7 +52,7 @@ async function sendProfileChanges(name, status) {
       {
         method: "PATCH",
         headers: {
-          authorization: "cf2f740d-de00-436f-a166-58000bce866a",
+          authorization: authorization,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
@@ -68,10 +70,10 @@ async function sendProfileChanges(name, status) {
 
 async function sendNewCard(cardName, cardLink) {
   try {
-    await fetch("https://nomoreparties.co/v1/plus-cohort-18/cards ", {
+    const fetchRes = await fetch("https://nomoreparties.co/v1/plus-cohort-18/cards", {
       method: "POST",
       headers: {
-        authorization: "cf2f740d-de00-436f-a166-58000bce866a",
+        authorization: authorization,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -79,6 +81,10 @@ async function sendNewCard(cardName, cardLink) {
         link: cardLink,
       }),
     });
+
+    const newCardInfo = fetchRes.json();
+    return newCardInfo;
+
   } catch (err) {
     console.log(`Ошибка ${err}`);
   }
@@ -91,7 +97,7 @@ async function deleteCard(cardId) {
     await fetch(`https://nomoreparties.co/v1/plus-cohort-18/cards/${cardId}`, {
       method: "DELETE",
       headers: {
-        authorization: "cf2f740d-de00-436f-a166-58000bce866a",
+        authorization: authorization,
         "Content-Type": "application/json",
       },
     });
@@ -107,7 +113,7 @@ async function updateAvatar(avatarLink) {
     await fetch("https://nomoreparties.co/v1/plus-cohort-18/users/me/avatar ", {
       method: "PATCH",
       headers: {
-        authorization: "cf2f740d-de00-436f-a166-58000bce866a",
+        authorization: authorization,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -128,7 +134,7 @@ async function like(cardId) {
       {
         method: "PUT",
         headers: {
-          authorization: "cf2f740d-de00-436f-a166-58000bce866a",
+          authorization: authorization,
           "Content-Type": "application/json",
         },
       }
@@ -150,7 +156,7 @@ async function unlike(cardId, cardElement) {
       {
         method: "DELETE",
         headers: {
-          authorization: "cf2f740d-de00-436f-a166-58000bce866a",
+          authorization: authorization,
           "Content-Type": "application/json",
         },
       }
