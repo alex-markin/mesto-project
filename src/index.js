@@ -24,9 +24,9 @@ import {
 
 import {
   getInfo,
-  // getCards,
   sendNewCard,
   updateAvatar,
+  sendProfileChanges
 } from "./components/api.js"; // работа с API
 
 import {
@@ -113,7 +113,8 @@ profileForm.addEventListener("submit", async (evt) => {
     const profileName = profileNameInput.value;
     const profileStatus = profileStatusInput.value;
     const popup = evt.target.closest(".popup");
-    await changeProfile(profileName, profileStatus);
+    await sendProfileChanges(profileName, profileStatus);
+    changeProfile(profileName, profileStatus);
     closePopup(popup);
   } catch {
     console.log(`Ошибка ${err}`);

@@ -47,7 +47,7 @@ async function getInfo() {
 // обновление профиля
 async function sendProfileChanges(name, status) {
   try {
-    const fetchRes = await fetch(
+    await fetch(
       "https://nomoreparties.co/v1/plus-cohort-18/users/me",
       {
         method: "PATCH",
@@ -56,11 +56,12 @@ async function sendProfileChanges(name, status) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: name.textContent,
-          about: status.textContent,
+          name: name,
+          about: status
         }),
       }
     );
+
   } catch (err) {
     console.log(`Ошибка ${err}`);
   }

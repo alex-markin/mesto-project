@@ -49,8 +49,7 @@ function closePopup() {
 
 // внесение изменений в профиль
 
-async function changeProfile(name, status) {
-  await sendProfileChanges(profileName, profileStatus);
+function changeProfile(name, status) {
   profileName.textContent = name;
   profileStatus.textContent = status;
 }
