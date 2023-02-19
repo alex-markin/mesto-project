@@ -1,4 +1,4 @@
-import { sendProfileChanges } from "./api.js";
+import { sendProfileChanges } from "./Api.js";
 
 import {
   profileName,

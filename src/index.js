@@ -16,18 +16,20 @@ import {
   avatarImg,
   profileName,
   profileStatus,
-  gallery,
   profileNameInput,
   profileStatusInput,
   editPopup,
+  userID,
+  gallerySelector,
+  headers,
+  baseURL
 } from "./components/globalConsts.js"; // глобальные переменные
 
 import {
-  getInfo,
-  sendNewCard,
-  updateAvatar,
-  sendProfileChanges
-} from "./components/api.js"; // работа с API
+  Api
+} from "./components/Api.js"; // работа с API
+
+import { Card } from "./components/Card.js"; // класс для создания карточки
 
 import {
   openPopup,
@@ -36,26 +38,38 @@ import {
   changeProfile,
 } from "./components/utils.js"; // повторяющиеся функции
 
-import { enableValidation } from "./components/validation.js"; // валидация форм
+import { Section } from "./components/Section"; // класс для создания карточек
 
-import { addElement, createCard } from "./components/createCards.js"; // создание новой карточки
+import { FormValidator } from "./components/FormValidator.js"; // валидация форм
 
 
-// рендер профиля и карточек с сервера
 
+// РЕНДЕРИНГ ПРОФИЛЯ И КАРТОЧЕК
+
+// создание экземпляра класса Api
+const api = new Api({
+  baseUrl: baseURL,
+  headers: headers
+});
+
+// рендеринг профиля и карточек с сервера
 async function renderInfo() {
   try {
-    const info = await getInfo();
+    const info = await api._getInfo();
     // рендер профиля
     avatarImg.src = info[0].avatar;
     profileName.textContent = info[0].name;
     profileStatus.textContent = info[0].about;
 
     // рендер карточек
-    info[1].forEach((item) => {
-      const galleryElement = createCard(item, info[0]);
-      gallery.append(galleryElement);
-    });
+    const cardList = new Section({
+      data: info[1],
+      renderer: (item) => {
+        const card = new Card(item, info[0], '#gallery-element', api);
+        const cardElement = card.generateCard();
+        cardList.addItem(cardElement);
+      }}, gallerySelector);
+      cardList.renderItems();
   } catch {
     console.log(`Ошибка ${err}`);
   }
@@ -64,12 +78,12 @@ async function renderInfo() {
 renderInfo()
 
 // обработчик формы добавления новых карточек
-
 cardForm.addEventListener("submit", async (evt) => {
+  evt.preventDefault();
   renderLoading(evt.submitter, true);
   try {
-    const newCard = await sendNewCard(newCardTitle.value, newCardLink.value)
-    addElement(newCard)
+    const newCard = await api.sendNewCard(newCardTitle.value, newCardLink.value)
+    addElement(newCard, userID)
     evt.target.reset()
     closePopup()
   } catch {
@@ -113,7 +127,7 @@ profileForm.addEventListener("submit", async (evt) => {
     const profileName = profileNameInput.value;
     const profileStatus = profileStatusInput.value;
     const popup = evt.target.closest(".popup");
-    await sendProfileChanges(profileName, profileStatus);
+    await api.sendProfileChanges(profileName, profileStatus);
     changeProfile(profileName, profileStatus);
     closePopup(popup);
   } catch {
@@ -130,7 +144,7 @@ avatarForm.addEventListener("submit", async (evt) => {
   evt.preventDefault();
   renderLoading(evt.submitter, true);
   try {
-    await updateAvatar(avatarLink.value);
+    await api.updateAvatar(avatarLink.value);
     avatarImg.src = avatarLink.value;
     evt.target.reset();
     closePopup();
@@ -141,13 +155,46 @@ avatarForm.addEventListener("submit", async (evt) => {
   }
 });
 
-// валидация форм
+// ВАЛИДАЦИЯ ФОРМ
 
-enableValidation({
-  formSelector: ".popup__form",
+// enableValidation({
+//   formSelector: ".popup__form",
+//   inputSelector: ".popup__input-item",
+//   submitButtonSelector: ".popup__save-button",
+//   inactiveButtonClass: "popup__save-button_disabled",
+//   inputErrorClass: "popup__input-item_error",
+//   errorClass: "popup__error_hidden",
+// });
+
+// валицация формы редактирования профиля
+const editFormValidator = new FormValidator({
   inputSelector: ".popup__input-item",
   submitButtonSelector: ".popup__save-button",
   inactiveButtonClass: "popup__save-button_disabled",
   inputErrorClass: "popup__input-item_error",
   errorClass: "popup__error_hidden",
-});
+}, profileForm);
+
+// валидация формы добавления карточки
+const addCardFormValidator = new FormValidator({
+  inputSelector: ".popup__input-item",
+  submitButtonSelector: ".popup__save-button",
+  inactiveButtonClass: "popup__save-button_disabled",
+  inputErrorClass: "popup__input-item_error",
+  errorClass: "popup__error_hidden",
+}, cardForm);
+
+// валидация формы редактирования аватара
+const avatarFormValidator = new FormValidator({
+  inputSelector: ".popup__input-item",
+  submitButtonSelector: ".popup__save-button",
+  inactiveButtonClass: "popup__save-button_disabled",
+  inputErrorClass: "popup__input-item_error",
+  errorClass: "popup__error_hidden",
+}, avatarForm);
+
+// включение валидации
+editFormValidator.enableValidation();
+addCardFormValidator.enableValidation();
+avatarFormValidator.enableValidation();
+
