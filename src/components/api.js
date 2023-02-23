@@ -6,7 +6,7 @@ export {
   deleteCard,
   like,
   unlike,
-  Api
+  Api,
 };
 
 import { authorization } from "./globalConsts.js";
@@ -20,54 +20,43 @@ class Api {
 
   async _getInfo() {
     try {
-      const userFetch = await fetch(
-        `${this._baseUrl}/users/me`,
-        {
-          headers: {
-            authorization: this._headers.authorization,
-            "Content-Type": this._headers["Content-Type"]
-          },
-        }
-      );
+      const userFetch = await fetch(`${this._baseUrl}/users/me`, {
+        headers: {
+          authorization: this._headers.authorization,
+          "Content-Type": this._headers["Content-Type"],
+        },
+      });
 
-      const cardsFetch = await fetch(
-        `${this._baseUrl}/cards`,
-        {
-          headers: {
-            authorization: this._headers.authorization,
-            "Content-Type": this._headers["Content-Type"]
-          },
-        }
-      );
+      const cardsFetch = await fetch(`${this._baseUrl}/cards`, {
+        headers: {
+          authorization: this._headers.authorization,
+          "Content-Type": this._headers["Content-Type"],
+        },
+      });
 
-    const userInfo = await userFetch.json();
-    const cards = await cardsFetch.json();
+      const userInfo = await userFetch.json();
+      const cards = await cardsFetch.json();
 
-    const results = [userInfo, cards];
-    return results;
+      const results = [userInfo, cards];
+      return results;
     } catch {
       console.log(`Ошибка ${err}`);
     }
-
   }
 
   async sendProfileChanges(name, status) {
     try {
-      await fetch(
-        `${this._baseUrl}/users/me`,
-        {
-          method: "PATCH",
-          headers: {
-            authorization: authorization,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: name,
-            about: status
-          }),
-        }
-      );
-
+      await fetch(`${this._baseUrl}/users/me`, {
+        method: "PATCH",
+        headers: {
+          authorization: authorization,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name,
+          about: status,
+        }),
+      });
     } catch {
       console.log(`Ошибка ${err}`);
     }
@@ -75,20 +64,17 @@ class Api {
 
   async sendNewCard(name, link) {
     try {
-      const fetchRes = await fetch(
-        `${this._baseUrl}/cards`,
-        {
-          method: "POST",
-          headers: {
-            authorization: this._headers.authorization,
-            "Content-Type": this._headers["Content-Type"]
-          },
-          body: JSON.stringify({
-            name: name,
-            link: link
-          }),
-        }
-      );
+      const fetchRes = await fetch(`${this._baseUrl}/cards`, {
+        method: "POST",
+        headers: {
+          authorization: this._headers.authorization,
+          "Content-Type": this._headers["Content-Type"],
+        },
+        body: JSON.stringify({
+          name: name,
+          link: link,
+        }),
+      });
 
       const newCardInfo = fetchRes.json();
       return newCardInfo;
@@ -99,20 +85,16 @@ class Api {
 
   async updateAvatar(link) {
     try {
-      await fetch(
-        `${this._baseUrl}/users/me/avatar`,
-        {
-          method: "PATCH",
-          headers: {
-            authorization: this._headers.authorization,
-            "Content-Type": this._headers["Content-Type"]
-          },
-          body: JSON.stringify({
-            avatar: link
-          }),
-        }
-      );
-
+      await fetch(`${this._baseUrl}/users/me/avatar`, {
+        method: "PATCH",
+        headers: {
+          authorization: this._headers.authorization,
+          "Content-Type": this._headers["Content-Type"],
+        },
+        body: JSON.stringify({
+          avatar: link,
+        }),
+      });
     } catch {
       console.log(`Ошибка ${err}`);
     }
@@ -120,17 +102,13 @@ class Api {
 
   async deleteCard(cardID) {
     try {
-      await fetch(
-        `${this._baseUrl}/cards/${cardID}`,
-        {
-          method: "DELETE",
-          headers: {
-            authorization: this._headers.authorization,
-            "Content-Type": this._headers["Content-Type"]
-          },
-        }
-      );
-
+      await fetch(`${this._baseUrl}/cards/${cardID}`, {
+        method: "DELETE",
+        headers: {
+          authorization: this._headers.authorization,
+          "Content-Type": this._headers["Content-Type"],
+        },
+      });
     } catch {
       console.log(`Ошибка ${err}`);
     }
@@ -138,20 +116,16 @@ class Api {
 
   async like(cardID) {
     try {
-      const like = await fetch(
-        `${this._baseUrl}/cards/likes/${cardID}`,
-        {
-          method: "PUT",
-          headers: {
-            authorization: this._headers.authorization,
-            "Content-Type": this._headers["Content-Type"]
-          },
-        }
-      );
+      const like = await fetch(`${this._baseUrl}/cards/likes/${cardID}`, {
+        method: "PUT",
+        headers: {
+          authorization: this._headers.authorization,
+          "Content-Type": this._headers["Content-Type"],
+        },
+      });
 
       const likeCount = like.json();
       return likeCount;
-
     } catch {
       console.log(`Ошибка ${err}`);
     }
@@ -159,30 +133,23 @@ class Api {
 
   async unlike(cardID) {
     try {
-      const unlike = await fetch(
-        `${this._baseUrl}/cards/likes/${cardID}`,
-        {
-          method: "DELETE",
-          headers: {
-            authorization: this._headers.authorization,
-            "Content-Type": this._headers["Content-Type"]
-          },
-        }
-      );
+      const unlike = await fetch(`${this._baseUrl}/cards/likes/${cardID}`, {
+        method: "DELETE",
+        headers: {
+          authorization: this._headers.authorization,
+          "Content-Type": this._headers["Content-Type"],
+        },
+      });
 
       const unlikeCount = unlike.json();
       return unlikeCount;
-
     } catch {
       console.log(`Ошибка ${err}`);
     }
   }
 }
 
-
-
 // запрос данных о профиле и карточках при загрузке страницы
-
 
 async function getInfo() {
   try {
@@ -219,21 +186,17 @@ async function getInfo() {
 // обновление профиля
 async function sendProfileChanges(name, status) {
   try {
-    await fetch(
-      "https://nomoreparties.co/v1/plus-cohort-18/users/me",
-      {
-        method: "PATCH",
-        headers: {
-          authorization: authorization,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: name,
-          about: status
-        }),
-      }
-    );
-
+    await fetch("https://nomoreparties.co/v1/plus-cohort-18/users/me", {
+      method: "PATCH",
+      headers: {
+        authorization: authorization,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: name,
+        about: status,
+      }),
+    });
   } catch (err) {
     console.log(`Ошибка ${err}`);
   }
@@ -243,21 +206,23 @@ async function sendProfileChanges(name, status) {
 
 async function sendNewCard(cardName, cardLink) {
   try {
-    const fetchRes = await fetch("https://nomoreparties.co/v1/plus-cohort-18/cards", {
-      method: "POST",
-      headers: {
-        authorization: authorization,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: cardName,
-        link: cardLink,
-      }),
-    });
+    const fetchRes = await fetch(
+      "https://nomoreparties.co/v1/plus-cohort-18/cards",
+      {
+        method: "POST",
+        headers: {
+          authorization: authorization,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: cardName,
+          link: cardLink,
+        }),
+      }
+    );
 
     const newCardInfo = fetchRes.json();
     return newCardInfo;
-
   } catch (err) {
     console.log(`Ошибка ${err}`);
   }
@@ -314,13 +279,12 @@ async function like(cardId) {
     );
     const jsonRes = await fetchRes.json();
     return jsonRes;
-
-    } catch (err) {
-      console.log(`Ошибка ${err}`);
-    }
+  } catch (err) {
+    console.log(`Ошибка ${err}`);
   }
+}
 
-  // снятие лайка карточки
+// снятие лайка карточки
 
 async function unlike(cardId, cardElement) {
   try {
@@ -335,8 +299,7 @@ async function unlike(cardId, cardElement) {
       }
     );
     const jsonRes = await fetchRes.json();
-      return jsonRes;
-
+    return jsonRes;
   } catch (err) {
     console.log(`Ошибка ${err}`);
   }
