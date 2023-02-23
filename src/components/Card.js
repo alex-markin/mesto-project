@@ -1,15 +1,12 @@
-import { openPopup } from "./utils.js"; // повторяющиеся функции
-
-import { imagePopup, popupImg, popupCaption } from "./globalConsts.js"; // глобальные переменные
-
 // класс для создания карточки
 
 export class Card {
-  constructor(item, profile, selector, api) {
+  constructor({ item, profile, selector, api, handleCardClick }) {
     this._item = item;
     this._profile = profile;
     this._selector = selector;
     this._api = api;
+    this.handleCardClick = handleCardClick;
   }
 
   // получение шаблона карточки
@@ -42,10 +39,17 @@ export class Card {
     );
     this._image = this._element.querySelector(".gallery-element__picture");
 
+    // проверка на принадлежность карточки пользователю и добавление кнопки удаления
     if (this._item.owner._id == this._profile._id) {
       this._deleteButton.classList.add("gallery-element__trash_visible");
     }
 
+    // проверка на лайк пользователя и добавление активного лайка
+    if (this._item.likes.some((like) => like._id == this._profile._id)) {
+      this._likeButton.classList.add("gallery-element__like-button_active");
+    }
+
+    // установка данных карточки
     this.cardElementTitle.textContent = this._item.name;
     this.cardElementImage.src = this._item.link;
     this.cardElementImage.alt = `Картинка: ${this._item.name}`;
@@ -66,8 +70,8 @@ export class Card {
       this._handleLikeClick(evt);
     });
 
-    this._image.addEventListener("click", (evt) => {
-      this._handleImageClick(evt);
+    this._image.addEventListener("click", () => {
+      this.handleCardClick();
     });
   }
 
@@ -101,104 +105,4 @@ export class Card {
       }
     }
   }
-
-  // слушатель открытия картинки в попапе
-  _handleImageClick(evt) {
-    popupImg.src = evt.target.src;
-    popupImg.alt = evt.target.alt;
-    popupCaption.textContent = this.cardElementTitle.textContent;
-    openPopup(imagePopup);
-  }
-}
-
-//создание новой карточки
-
-// function createCard(item, profile) {
-//   const galleryTemplate = document.querySelector("#gallery-element").content;
-//   const cardElement = galleryTemplate
-//     .querySelector(".gallery-element")
-//     .cloneNode(true);
-
-//   const cardElementTitle = cardElement.querySelector(".gallery-element__title");
-//   const cardElementImage = cardElement.querySelector(
-//     ".gallery-element__picture"
-//   );
-
-//   const deleteButton = cardElement.querySelector(".gallery-element__trash");
-//   const likeButton = cardElement.querySelector(".gallery-element__like-button");
-//   const likeCount = cardElement.querySelector(".gallery-element__like-count");
-
-//   cardElementTitle.textContent = item.name;
-//   cardElementImage.src = item.link;
-//   cardElementImage.alt = `Картинка: ${item.name}`;
-//   likeCount.textContent = item.likes.length;
-
-//   // добавление кнопки удаления на карточки пользователя
-
-//   if (item.owner._id == profile._id) {
-//     deleteButton.classList.add("gallery-element__trash_visible");
-//   }
-
-//   //открытие картинок в отдельном модальном окне
-//   cardElementImage.addEventListener("click", (evt) => {
-//     popupImg.src = evt.target.src;
-//     popupImg.alt = evt.target.alt;
-//     popupCaption.textContent = cardElementTitle.textContent;
-//     openPopup(imagePopup);
-//   });
-
-//   //удаление карточек
-
-//   deleteButton.addEventListener("click", async () => {
-//     try {
-//       await deleteCard(item._id);
-//       cardElement.remove();
-//     } catch {
-//       console.log(`Ошибка ${err}`);
-//     }
-//   });
-
-//   //лайк карточек
-
-//   likeButton.addEventListener("click", async (evt) => {
-
-//     if (evt.target.classList.contains("gallery-element__like-button_active")) {
-
-//       try {
-//         await unlike(item._id).then((data) => {
-//           likeCount.textContent = data.likes.length;
-//         });
-//         evt.target.classList.remove("gallery-element__like-button_active");
-//       } catch {
-//         console.log(`Ошибка ${err}`);
-//       }
-
-//     } else {
-
-//       try {
-//         await like(item._id).then((data) => {
-//           likeCount.textContent = data.likes.length;
-//         });
-//         evt.target.classList.add("gallery-element__like-button_active");
-//       } catch {
-//         console.log(`Ошибка ${err}`);
-//       }
-
-//     }
-//   });
-
-//   return cardElement;
-// }
-
-// добавление элемента в верстку через окно добавления карточки
-
-export function addElement(cardInfo, userID) {
-  const item = cardInfo;
-
-  const profile = {
-    _id: userID,
-  };
-
-  const galleryElement = createCard(item, profile);
-  gallery.prepend(galleryElement);
 }
