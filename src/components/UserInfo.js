@@ -26,7 +26,7 @@ export class UserInfo {
       localStorage.setItem("status", sendProfileChanges.about);
       localStorage.setItem("avatar", sendProfileChanges.avatar);
     } catch {
-      console.log(Ошибка ${err});
+      console.log(`Ошибка ${err}`);
     }
   }
 
@@ -37,4 +37,3 @@ export class UserInfo {
     this._avatar.src = localStorage.getItem("avatar");
   }
 }
-

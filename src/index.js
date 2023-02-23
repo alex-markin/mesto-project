@@ -1,47 +1,29 @@
 import "./pages/index.css"; //  CSS стили
-
 import {
-  addPopup,
-  avatarPopup,
   editButton,
   addButton,
-  closeButtons,
   profileForm,
   cardForm,
-  newCardLink,
-  newCardTitle,
   editAvatar,
   avatarForm,
-  avatarLink,
   avatarImg,
   profileName,
   profileStatus,
   profileNameInput,
   profileStatusInput,
-  editPopup,
-  userID,
   gallerySelector,
   headers,
   baseURL
 } from "./components/globalConsts.js"; // глобальные переменные
 
-import {
-  Api
-} from "./components/Api.js"; // работа с API
-
+// импорт классов
+import { Api } from "./components/Api.js"; // работа с API
 import { Card } from "./components/Card.js"; // класс для создания карточки
-
-import {
-  openPopup,
-  closePopup,
-  renderLoading,
-  changeProfile,
-} from "./components/utils.js"; // повторяющиеся функции
-
+import { UserInfo } from "./components/UserInfo"; // класс для работы с профилем
+import { PopupWithForm } from "./components/PopupWithForm"; // класс для работы с формами
+import { PopupWithImage } from "./components/PopupWithImage";  // класс для работы с картинками
 import { Section } from "./components/Section"; // класс для создания карточек
-
 import { FormValidator } from "./components/FormValidator.js"; // валидация форм
-
 
 
 // РЕНДЕРИНГ ПРОФИЛЯ И КАРТОЧЕК
@@ -52,22 +34,41 @@ const api = new Api({
   headers: headers
 });
 
+
 // рендеринг профиля и карточек с сервера
 async function renderInfo() {
   try {
     const info = await api._getInfo();
     // рендер профиля
-    avatarImg.src = info[0].avatar;
-    profileName.textContent = info[0].name;
-    profileStatus.textContent = info[0].about;
+    const userInfo = new UserInfo({
+      nameSelector: ".profile__name",
+      statusSelector: ".profile__status",
+      avatarSelector: ".profile__avatar",
+      api: api,
+    });
 
-    // рендер карточек
+    userInfo.getUserInfoFromLocalStorage(); // возврат данных из локального хранилища
+    userInfo.setUserInfo(info[0]); // подгрузка обновленных данных с сервера
+
+    // рендер карточек c сервера
     const cardList = new Section({
       data: info[1],
       renderer: (item) => {
-        const card = new Card(item, info[0], '#gallery-element', api);
+        const card = new Card({
+          item: item,
+          profile: info[0],
+          selector: '#gallery-element',
+          api: api,
+          handleCardClick: () => {
+            const popupWithImage = new PopupWithImage(".popup_image");
+            popupWithImage.open(item.name, item.link);
+            popupWithImage.setEventListeners();
+          },
+        });
+
         const cardElement = card.generateCard();
-        cardList.addItem(cardElement);
+        cardList.appendItem(cardElement);
+
       }}, gallerySelector);
       cardList.renderItems();
   } catch {
@@ -77,94 +78,119 @@ async function renderInfo() {
 
 renderInfo()
 
-// обработчик формы добавления новых карточек
-cardForm.addEventListener("submit", async (evt) => {
-  evt.preventDefault();
-  renderLoading(evt.submitter, true);
-  try {
-    const newCard = await api.sendNewCard(newCardTitle.value, newCardLink.value)
-    addElement(newCard, userID)
-    evt.target.reset()
-    closePopup()
-  } catch {
-    console.log(`Ошибка ${err}`);
-  } finally {
-    renderLoading(evt.submitter, false);
-  }
+
+// РАБОТА МОДАЛЬНЫХ ОКОН
+
+// создание editPopup
+
+const editPopup = new PopupWithForm({
+  popupSelector: "#edit-profile-popup",
+  handleFormSubmit: async (data) => {
+    editPopup.renderLoading(true);
+    try {
+      const profileName = data.name;
+      const profileStatus = data.status;
+
+      const newProfile = new UserInfo({
+        nameSelector: ".profile__name",
+        statusSelector: ".profile__status",
+        avatarSelector: ".profile__avatar",
+        api: api
+      });
+
+      await newProfile.setUserInfo({name: profileName, about: profileStatus});
+
+      editPopup.close();
+    } catch {
+      console.log(`Ошибка ${err}`);
+    } finally {
+      editPopup.renderLoading(false);
+    }
+  },
 });
 
-// открытие и закрытие модальных окон
-
-function editButtonHandle() {
+// открытие editPopup
+editButton.addEventListener("click", () => {
   profileNameInput.value = profileName.textContent;
   profileStatusInput.value = profileStatus.textContent;
-  openPopup(editPopup);
+
+  editPopup.open();
+});
+
+
+// создание addCardPopup
+const addCardPopup = new PopupWithForm({
+  popupSelector: "#add-item-popup",
+  handleFormSubmit: async (data) => {
+    try {
+    addCardPopup.renderLoading(true);
+    const cardName = data.title;
+    const cardLink = data.link;
+
+    const sendNewCard = await api.sendNewCard({name: cardName, link: cardLink});
+    const profile = await api._getInfo();
+
+    const newCardRender = new Section({
+      data: [sendNewCard],
+      renderer: (item) => {
+
+        const card = new Card({
+          item: item,
+          profile: profile[0],
+          selector: '#gallery-element',
+          api: api,
+          handleCardClick: () => {
+            const popupWithImage = new PopupWithImage(".popup_image");
+            popupWithImage.open(item.name, item.link);
+            popupWithImage.setEventListeners();
+          }
+        });
+
+        const cardElement = card.generateCard();
+        newCardRender.prependItem(cardElement);
+    }
+  }, gallerySelector);
+
+  newCardRender.renderItems();
+  addCardPopup.close();
+} catch {
+  console.log(`Ошибка ${err}`);
+} finally {
+  addCardPopup.renderLoading(false);
 }
+  }
+});
 
-editButton.addEventListener("click", editButtonHandle);
 
+// открытие addCardPopup
 addButton.addEventListener("click", () => {
-  openPopup(addPopup);
+  addCardPopup.open();
 });
 
+// создание avatarPopup
+const avatarPopup = new PopupWithForm({
+  popupSelector: "#edit-avatar-popup",
+  handleFormSubmit: async (data) => {
+    try {
+      avatarPopup.renderLoading(true);
+      const avatarLink = data.avatarLink;
+      const updateAvatar = await api.updateAvatar(avatarLink);
+      avatarImg.src = updateAvatar.avatar;
+      avatarPopup.close();
+    } catch {
+      // console.log(`Ошибка ${err}`);
+    } finally {
+      avatarPopup.renderLoading(false);
+    }
+  }
+});
+
+// открытие avatarPopup
 editAvatar.addEventListener("click", () => {
-  openPopup(avatarPopup);
-});
-
-closeButtons.forEach((button) => {
-  const popup = button.closest(".popup");
-  button.addEventListener("click", () => {
-    closePopup(popup);
-  });
-});
-
-// обработчик формы редактирования профиля
-
-profileForm.addEventListener("submit", async (evt) => {
-  evt.preventDefault();
-  renderLoading(evt.submitter, true);
-  try {
-    const profileName = profileNameInput.value;
-    const profileStatus = profileStatusInput.value;
-    const popup = evt.target.closest(".popup");
-    await api.sendProfileChanges(profileName, profileStatus);
-    changeProfile(profileName, profileStatus);
-    closePopup(popup);
-  } catch {
-    console.log(`Ошибка ${err}`);
-  } finally {
-    renderLoading(evt.submitter, false);
-  }
-});
-
-
-// обработчик формы редактирования Аватара
-
-avatarForm.addEventListener("submit", async (evt) => {
-  evt.preventDefault();
-  renderLoading(evt.submitter, true);
-  try {
-    await api.updateAvatar(avatarLink.value);
-    avatarImg.src = avatarLink.value;
-    evt.target.reset();
-    closePopup();
-  } catch {
-    console.log(`Ошибка ${err}`);
-  } finally {
-    renderLoading(evt.submitter, false);
-  }
+  avatarPopup.open();
 });
 
 // ВАЛИДАЦИЯ ФОРМ
-
-// enableValidation({
-//   formSelector: ".popup__form",
-//   inputSelector: ".popup__input-item",
-//   submitButtonSelector: ".popup__save-button",
-//   inactiveButtonClass: "popup__save-button_disabled",
-//   inputErrorClass: "popup__input-item_error",
-//   errorClass: "popup__error_hidden",
-// });
 
 // валицация формы редактирования профиля
 const editFormValidator = new FormValidator({
@@ -197,4 +223,5 @@ const avatarFormValidator = new FormValidator({
 editFormValidator.enableValidation();
 addCardFormValidator.enableValidation();
 avatarFormValidator.enableValidation();
+
 
