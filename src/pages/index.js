@@ -1,4 +1,4 @@
-import "./pages/index.css"; //  CSS стили
+import "./index.css"; //  CSS стили
 import {
   editButton,
   addButton,
@@ -14,16 +14,16 @@ import {
   gallerySelector,
   headers,
   baseURL
-} from "./components/globalConsts.js"; // глобальные переменные
+} from "../components/globalConsts.js"; // глобальные переменные
 
 // импорт классов
-import { Api } from "./components/Api.js"; // работа с API
-import { Card } from "./components/Card.js"; // класс для создания карточки
-import { UserInfo } from "./components/UserInfo"; // класс для работы с профилем
-import { PopupWithForm } from "./components/PopupWithForm"; // класс для работы с формами
-import { PopupWithImage } from "./components/PopupWithImage";  // класс для работы с картинками
-import { Section } from "./components/Section"; // класс для создания карточек
-import { FormValidator } from "./components/FormValidator.js"; // валидация форм
+import { Api } from "../components/Api.js"; // работа с API
+import { Card } from "../components/Card.js"; // класс для создания карточки
+import { UserInfo } from "../components/UserInfo"; // класс для работы с профилем
+import { PopupWithForm } from "../components/PopupWithForm"; // класс для работы с формами
+import { PopupWithImage } from "../components/PopupWithImage";  // класс для работы с картинками
+import { Section } from "../components/Section"; // класс для создания карточек
+import { FormValidator } from "../components/FormValidator.js"; // валидация форм
 
 
 // РЕНДЕРИНГ ПРОФИЛЯ И КАРТОЧЕК
