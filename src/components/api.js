@@ -11,35 +11,28 @@ class Api {
 
   async _getInfo() {
     try {
-      const userFetch = await fetch(
-        `${this._baseUrl}/users/me`,
-        {
-          headers: {
-            authorization: this._headers.authorization,
-            "Content-Type": this._headers["Content-Type"]
-          },
-        }
-      );
+      const userFetch = await fetch(`${this._baseUrl}/users/me`, {
+        headers: {
+          authorization: this._headers.authorization,
+          "Content-Type": this._headers["Content-Type"],
+        },
+      });
 
-      const cardsFetch = await fetch(
-        `${this._baseUrl}/cards`,
-        {
-          headers: {
-            authorization: this._headers.authorization,
-            "Content-Type": this._headers["Content-Type"]
-          },
-        }
-      );
+      const cardsFetch = await fetch(`${this._baseUrl}/cards`, {
+        headers: {
+          authorization: this._headers.authorization,
+          "Content-Type": this._headers["Content-Type"],
+        },
+      });
 
-    const userInfo = await userFetch.json();
-    const cards = await cardsFetch.json();
+      const userInfo = await userFetch.json();
+      const cards = await cardsFetch.json();
 
-    const results = [userInfo, cards];
-    return results;
+      const results = [userInfo, cards];
+      return results;
     } catch {
       console.log(`Ошибка ${err}`);
     }
-
   }
 
   async sendProfileChanges(name, status) {
@@ -65,20 +58,17 @@ class Api {
 
   async sendNewCard({ name, link }) {
     try {
-      const fetchRes = await fetch(
-        `${this._baseUrl}/cards`,
-        {
-          method: "POST",
-          headers: {
-            authorization: this._headers.authorization,
-            "Content-Type": this._headers["Content-Type"]
-          },
-          body: JSON.stringify({
-            name: name,
-            link: link
-          }),
-        }
-      );
+      const fetchRes = await fetch(`${this._baseUrl}/cards`, {
+        method: "POST",
+        headers: {
+          authorization: this._headers.authorization,
+          "Content-Type": this._headers["Content-Type"],
+        },
+        body: JSON.stringify({
+          name: name,
+          link: link,
+        }),
+      });
 
       const newCardInfo = fetchRes.json();
       return newCardInfo;
@@ -109,17 +99,13 @@ class Api {
 
   async deleteCard(cardID) {
     try {
-      await fetch(
-        `${this._baseUrl}/cards/${cardID}`,
-        {
-          method: "DELETE",
-          headers: {
-            authorization: this._headers.authorization,
-            "Content-Type": this._headers["Content-Type"]
-          },
-        }
-      );
-
+      await fetch(`${this._baseUrl}/cards/${cardID}`, {
+        method: "DELETE",
+        headers: {
+          authorization: this._headers.authorization,
+          "Content-Type": this._headers["Content-Type"],
+        },
+      });
     } catch {
       console.log(`Ошибка ${err}`);
     }
@@ -127,20 +113,16 @@ class Api {
 
   async like(cardID) {
     try {
-      const like = await fetch(
-        `${this._baseUrl}/cards/likes/${cardID}`,
-        {
-          method: "PUT",
-          headers: {
-            authorization: this._headers.authorization,
-            "Content-Type": this._headers["Content-Type"]
-          },
-        }
-      );
+      const like = await fetch(`${this._baseUrl}/cards/likes/${cardID}`, {
+        method: "PUT",
+        headers: {
+          authorization: this._headers.authorization,
+          "Content-Type": this._headers["Content-Type"],
+        },
+      });
 
       const likeCount = like.json();
       return likeCount;
-
     } catch {
       console.log(`Ошибка ${err}`);
     }
@@ -148,20 +130,16 @@ class Api {
 
   async unlike(cardID) {
     try {
-      const unlike = await fetch(
-        `${this._baseUrl}/cards/likes/${cardID}`,
-        {
-          method: "DELETE",
-          headers: {
-            authorization: this._headers.authorization,
-            "Content-Type": this._headers["Content-Type"]
-          },
-        }
-      );
+      const unlike = await fetch(`${this._baseUrl}/cards/likes/${cardID}`, {
+        method: "DELETE",
+        headers: {
+          authorization: this._headers.authorization,
+          "Content-Type": this._headers["Content-Type"],
+        },
+      });
 
       const unlikeCount = unlike.json();
       return unlikeCount;
-
     } catch {
       console.log(`Ошибка ${err}`);
     }
