@@ -33,9 +33,9 @@ export class PopupWithForm extends Popup {
 
   renderLoading(isLoading) {
     if (isLoading) {
-      this._form.querySelector(".popup__save-button").textContent = "Сохранение...";
+      this._form.querySelector(".popup__save-button").value = "Сохранение...";
     } else {
-      this._form.querySelector(".popup__save-button").textContent = "Сохранить";
+      this._form.querySelector(".popup__save-button").value = "Сохранить";
     }
   }
 

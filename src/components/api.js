@@ -30,7 +30,7 @@ class Api {
 
       const results = [userInfo, cards];
       return results;
-    } catch {
+    } catch(err) {
       console.log(`Ошибка ${err}`);
     }
   }
@@ -51,7 +51,7 @@ class Api {
 
       const newProfileInfo = res.json();
       return newProfileInfo;
-    } catch {
+    } catch(err) {
       console.log(`Ошибка ${err}`);
     }
   }
@@ -72,7 +72,7 @@ class Api {
 
       const newCardInfo = fetchRes.json();
       return newCardInfo;
-    } catch {
+    } catch(err) {
       console.log(`Ошибка ${err}`);
     }
   }
@@ -92,7 +92,7 @@ class Api {
 
       const newAvatarInfo = sendNewAvatar.json();
       return newAvatarInfo;
-    } catch {
+    } catch(err) {
       console.log(`Ошибка ${err}`);
     }
   }
@@ -106,7 +106,7 @@ class Api {
           "Content-Type": this._headers["Content-Type"],
         },
       });
-    } catch {
+    } catch(err) {
       console.log(`Ошибка ${err}`);
     }
   }
@@ -123,7 +123,7 @@ class Api {
 
       const likeCount = like.json();
       return likeCount;
-    } catch {
+    } catch(err) {
       console.log(`Ошибка ${err}`);
     }
   }
@@ -140,7 +140,7 @@ class Api {
 
       const unlikeCount = unlike.json();
       return unlikeCount;
-    } catch {
+    } catch(err) {
       console.log(`Ошибка ${err}`);
     }
   }
