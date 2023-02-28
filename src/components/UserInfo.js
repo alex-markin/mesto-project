@@ -24,16 +24,18 @@ export class UserInfo {
       );
       this._name.textContent = sendProfileChanges.name;
       this._status.textContent = sendProfileChanges.about;
-      this._avatar.src = sendProfileChanges.avatar;
     } catch (err) {
       console.log(`Ошибка ${err}`);
     }
   }
 
-  // получение данных пользователя из локального хранилища
-  getUserInfoFromLocalStorage() {
-    this._name.textContent = localStorage.getItem("name");
-    this._status.textContent = localStorage.getItem("status");
-    this._avatar.src = localStorage.getItem("avatar");
+  // обновление аватара пользователя
+  async setUserAvatar(data) {
+    try {
+      const sendAvatarChanges = await this._api.updateAvatar(data.avatar);
+      this._avatar.src = sendAvatarChanges.avatar;
+    } catch (err) {
+      console.log(`Ошибка ${err}`);
+    }
   }
 }

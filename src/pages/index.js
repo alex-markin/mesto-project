@@ -44,6 +44,32 @@ const userInfo = new UserInfo({
   api: api,
 });
 
+// создание экземпляра класса Section для карточек
+function renderCards({
+  items,
+  profile,
+  selector,
+  api,
+  addMethod,
+  containerSelector,
+}) {
+  const cardList = new Section(
+    {
+      data: items,
+      renderer: (item) => {
+        const card = createCard(item, profile, selector, api);
+        if (addMethod === "appendItem") {
+          cardList.appendItem(card);
+        } else {
+          cardList.prependItem(card);
+        }
+      },
+    },
+    containerSelector
+  );
+  return cardList;
+}
+
 // создание экземпляра класса Card
 function createCard(item, profile, selector, api) {
   const card = new Card({
@@ -82,6 +108,7 @@ function createCard(item, profile, selector, api) {
       }
     },
   });
+
   return card.generateCard();
 }
 
@@ -91,24 +118,17 @@ async function renderInfo() {
     const info = await api._getInfo();
     // рендер профиля
     userInfo.setUserInfo(info[0]);
+    userInfo.setUserAvatar(info[0]);
 
     // рендер карточек c сервера
-    const cardList = new Section(
-      {
-        // примечания для ревьюера: Не совсем понятно, как переиспользовать один экземпляр Section с учётом того, что у них отличается renderer. А вводные данные при рендере базовых карточек и создании новой отличаются. Мы же специально делаем Section гибким, чтобы можно было использовать его для разных целей. Поэтому я создаю новый экземпляр Section для каждого рендера.
-        data: info[1],
-        renderer: (item) => {
-          const cardElement = createCard(
-            item,
-            info[0],
-            "#gallery-element",
-            api
-          );
-          cardList.appendItem(cardElement);
-        },
-      },
-      gallerySelector
-    );
+    const cardList = renderCards({
+      items: info[1],
+      profile: info[0],
+      selector: "#gallery-element",
+      api: api,
+      addMethod: "appendItem",
+      containerSelector: gallerySelector,
+    });
     cardList.renderItems();
   } catch (err) {
     console.log(`Ошибка ${err}`);
@@ -163,21 +183,15 @@ const addCardPopup = new PopupWithForm({
       });
       const profile = await userInfo.getUserInfo();
 
-      const newCardRender = new Section(
-        {
-          data: [sendNewCard],
-          renderer: (item) => {
-            const cardElement = createCard(
-              item,
-              profile,
-              "#gallery-element",
-              api
-            );
-            newCardRender.prependItem(cardElement);
-          },
-        },
-        gallerySelector
-      );
+      const newCardRender = renderCards({
+        items: [sendNewCard],
+        profile: profile,
+        selector: "#gallery-element",
+        api: api,
+        addMethod: "prependItem",
+        containerSelector: gallerySelector,
+      });
+
       newCardRender.renderItems();
       addCardPopup.close();
     } catch (err) {
@@ -200,11 +214,10 @@ const avatarPopup = new PopupWithForm({
     try {
       avatarPopup.renderLoading(true);
       const avatarLink = data.avatarLink;
-      const updateAvatar = await api.updateAvatar(avatarLink);
-      avatarImg.src = updateAvatar.avatar;
+      await userInfo.setUserAvatar({ avatar: avatarLink });
       avatarPopup.close();
     } catch (err) {
-      // console.log(`Ошибка ${err}`);
+      console.log(`Ошибка ${err}`);
     } finally {
       avatarPopup.renderLoading(false);
     }
