@@ -45,6 +45,11 @@ const userInfo = new UserInfo({
 });
 
 // создание экземпляра класса Section для карточек
+
+let cardsContainer;
+
+// создание экземпляра класса Section для профиля
+
 function renderCards({
   items,
   profile,
@@ -58,11 +63,7 @@ function renderCards({
       data: items,
       renderer: (item) => {
         const card = createCard(item, profile, selector, api);
-        if (addMethod === "appendItem") {
           cardList.appendItem(card);
-        } else {
-          cardList.prependItem(card);
-        }
       },
     },
     containerSelector
@@ -121,7 +122,7 @@ async function renderInfo() {
     userInfo.setUserAvatar(info[0]);
 
     // рендер карточек c сервера
-    const cardList = renderCards({
+    cardsContainer = renderCards({
       items: info[1],
       profile: info[0],
       selector: "#gallery-element",
@@ -129,7 +130,7 @@ async function renderInfo() {
       addMethod: "appendItem",
       containerSelector: gallerySelector,
     });
-    cardList.renderItems();
+    cardsContainer.renderItems();
   } catch (err) {
     console.log(`Ошибка ${err}`);
   }
@@ -182,17 +183,12 @@ const addCardPopup = new PopupWithForm({
         link: cardLink,
       });
       const profile = await userInfo.getUserInfo();
+      
+      cardsContainer.prependItem(
+        createCard(sendNewCard, profile, "#gallery-element", api)
+      );
 
-      const newCardRender = renderCards({
-        items: [sendNewCard],
-        profile: profile,
-        selector: "#gallery-element",
-        api: api,
-        addMethod: "prependItem",
-        containerSelector: gallerySelector,
-      });
-
-      newCardRender.renderItems();
+      // newCardRender.renderItems();
       addCardPopup.close();
     } catch (err) {
       console.log(`Ошибка ${err}`);
