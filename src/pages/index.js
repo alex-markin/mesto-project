@@ -44,7 +44,7 @@ const userInfo = new UserInfo({
   api: api,
 });
 
-// создание экземпляра класса Section для карточек
+// создание контейнера для карточек
 
 let cardsContainer;
 
@@ -55,7 +55,6 @@ function renderCards({
   profile,
   selector,
   api,
-  addMethod,
   containerSelector,
 }) {
   const cardList = new Section(
@@ -121,13 +120,12 @@ async function renderInfo() {
     userInfo.setUserInfo(info[0]);
     userInfo.setUserAvatar(info[0]);
 
-    // рендер карточек c сервера
+    // рендер карточек c сервера и первичное создание класса Section
     cardsContainer = renderCards({
       items: info[1],
       profile: info[0],
       selector: "#gallery-element",
       api: api,
-      addMethod: "appendItem",
       containerSelector: gallerySelector,
     });
     cardsContainer.renderItems();
@@ -183,7 +181,7 @@ const addCardPopup = new PopupWithForm({
         link: cardLink,
       });
       const profile = await userInfo.getUserInfo();
-      
+
       cardsContainer.prependItem(
         createCard(sendNewCard, profile, "#gallery-element", api)
       );
