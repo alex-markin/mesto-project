@@ -2,14 +2,16 @@
 
 ## Содержание:
 
-Учебный проект "Mesto" направлен на отработку адаптивной верстки, работе с JS, валидации форм и настройке взаимодействия с сервером
+Study project "Mesto" is aimed at practicing adaptive layout, working with JS, form validation and setting up server interaction
+
 
 ## Использованные технологии и ресурсы
 * HTML
 * CSS (GRID, flex, @media-querries)
 * JavaScript
 * Figma
-* БЭМ
+* BEM
+* OOP
 * VSCode
 * Webpack
 * API (server integration)
