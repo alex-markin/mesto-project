@@ -12,8 +12,6 @@ export class UserInfo {
     return userInfo[0];
   }
 
-  // комментарий для ревьюера: не совсем понятет коментарий, с учётом, что задание сформулировано так: Содержит публичный метод getUserInfo, который возвращает объект с данными пользователя. Данные для этого метода нужно получать от методов класса Api — подумайте над тем, как внедрить метод класса Api в getUserInfo. Когда данные пользователя нужно будет подставить в форму при открытии — метод вам пригодится.
-  //Содержит публичный метод setUserInfo, который принимает новые данные пользователя, отправляет их на сервер и добавляет их на страницу.
 
   // отправка данных пользователя на сервер, обновление данных на странице и в локальном хранилище
   async setUserInfo(data) {
@@ -24,6 +22,9 @@ export class UserInfo {
       );
       this._name.textContent = sendProfileChanges.name;
       this._status.textContent = sendProfileChanges.about;
+
+      this.saveToLocalStorage("name", sendProfileChanges.name);
+      this.saveToLocalStorage("about", sendProfileChanges.about);
     } catch (err) {
       console.log(`Ошибка ${err}`);
     }
@@ -34,8 +35,18 @@ export class UserInfo {
     try {
       const sendAvatarChanges = await this._api.updateAvatar(data.avatar);
       this._avatar.src = sendAvatarChanges.avatar;
+      this.saveToLocalStorage("avatar", sendAvatarChanges.avatar);
     } catch (err) {
       console.log(`Ошибка ${err}`);
     }
   }
+
+  saveToLocalStorage(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
+  }
+
+  getFromLocalStorage(key) {
+    return JSON.parse(localStorage.getItem(key));
+  }
+
 }

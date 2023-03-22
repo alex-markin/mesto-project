@@ -112,15 +112,35 @@ function createCard(item, profile, selector, api) {
   return card.generateCard();
 }
 
-// рендеринг профиля и карточек с сервера
+// renderInfo() - функция для рендеринга профиля и карточек
 async function renderInfo() {
+
+  // Get saved data from localStorage
+  const savedName = userInfo.getFromLocalStorage("name");
+  const savedStatus = userInfo.getFromLocalStorage("about");
+  const savedAvatar = userInfo.getFromLocalStorage("avatar");
+
+
+  // Set saved data before waiting for the API request
+  if (savedName && savedStatus && savedAvatar) {
+    userInfo._name.textContent = savedName;
+    userInfo._status.textContent = savedStatus;
+    userInfo._avatar.src = savedAvatar;
+  }
+
   try {
     const info = await api._getInfo();
-    // рендер профиля
-    userInfo.setUserInfo(info[0]);
-    userInfo.setUserAvatar(info[0]);
 
-    // рендер карточек c сервера и первичное создание класса Section
+    // Update the data only if it's different from what's in localStorage
+    if (
+      savedName !== info[0].name ||
+      savedStatus !== info[0].about ||
+      savedAvatar !== info[0].avatar
+    ) {
+      userInfo.setUserInfo(info[0]);
+      userInfo.setUserAvatar(info[0]);
+    }
+
     cardsContainer = renderCards({
       items: info[1],
       profile: info[0],
